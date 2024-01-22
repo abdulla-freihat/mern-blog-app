@@ -13,7 +13,7 @@ const Navbar = () => {
 
     <form>
 
-          <TextInput  type='text' placeholder='Search...'  rightIcon={AiOutlineSearch} className='hidden lg:inline'/>
+          <TextInput  type='text' placeholder='Search...'  rightIcon={AiOutlineSearch} className='hidden lg:inline '/>
 
     </form>
     <Button className='w-12 h-10  lg:hidden ' color="gray" pill>
@@ -27,7 +27,7 @@ const Navbar = () => {
      </Button>
 
       <Link to='/sign-in'>
-        <Button className='border' gradientDuoTone='purpleToBlue' pill>Sign In</Button>
+        <Button className='border' gradientDuoTone='purpleToBlue' pill outline>Sign In</Button>
       </Link>
 
       <FlowbiteNavbar.Toggle />
@@ -38,7 +38,7 @@ const Navbar = () => {
     
 
     <FlowbiteNavbar.Collapse>
-           <FlowbiteNavbar.Link active={path === '/'} as={'div'}>
+           <FlowbiteNavbar.Link active={path === '/'} as={'div'} >
             <Link to='/'>Home</Link>
             </FlowbiteNavbar.Link>
 
