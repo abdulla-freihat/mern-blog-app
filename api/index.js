@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 dotenv.config({path:__dirname+'/.env'});
 
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
+
 
 
 
@@ -26,6 +28,7 @@ mongoose.connect(db)
 
 
 const app = express();
+app.use(express.json());//allow json as the input in backend
 
 
 
@@ -36,4 +39,5 @@ app.listen(process.env.PORT, ()=>{
 
 
 app.use('/api/user' , userRoutes);
+app.use('/api/auth' , authRoutes);
 
