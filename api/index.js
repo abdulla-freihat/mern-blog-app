@@ -1,13 +1,16 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const userSchema = require('./models/userSchema');
 dotenv.config({path:__dirname+'/.env'});
 
 
 
+
+
 const db = process.env.MONGO_URL;
-console.log(db)
+
 
 mongoose.connect(db)
 .then(()=>{
