@@ -8,9 +8,11 @@ const signup = async (req, res , next)=>{
 
     if(!username || !email || !password || username==='' || email==='' || password===''){
 
-         return res.status(400).json({message : 'All fields are required'})
+     return res.status(400).json({message : 'All fields are required!'})
                
     }
+
+    
 
 
     //hash the password before saving
@@ -27,11 +29,10 @@ const signup = async (req, res , next)=>{
 
     try{
         await newUser.save();
-
-        res.json({message : "sign up successfull"})      
+        res.status(201).json({success:true ,message : "sign up successfull"})      
     }catch(err){
 
-            res.status(500).json({message : err.message})
+            res.status(400).json({success:false , message : err.message})
     }
    
 
