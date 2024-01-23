@@ -1,6 +1,10 @@
 
 const userSchema = require('../models/userSchema.js');
 const bcrypt = require('bcrypt');
+
+const jwt = require('jsonwebtoken');
+
+
 const signup = async (req, res , next)=>{
 
 
@@ -40,7 +44,66 @@ const signup = async (req, res , next)=>{
 }
 
 
+
+
+const signin  = async(req, res)=>{
+
+    const {email , password} = req.body;
+
+
+    if(!email || !password || email==='' || password===''){
+
+        return res.status(400).json({message : 'All fields are required!'})
+                  
+       }
+
+
+     
+
+     try{
+
+        //check a valid user
+     const user = await userSchema.findOne({email});
+
+
+     
+
+     if(!user){
+
+          return res.status(400).json('User Not found')
+     }
+
+
+
+     const validPassword = await bcrypt.compare(password , user.password)
+
+     if(!validPassword){
+
+        return res.status(400).json('Invalid email or password ')
+
+     }
+
+
+          //create token
+
+          const token = jwt.sign({id : user._id} , process.env.JWT_SECRET);
+
+          res.cookie('access_token' , token , {httpOnly : true } ).status(201).json({success:true ,user});
+
+          
+
+       
+
+
+     }catch(err){
+
+           res.status(400).json({success : false , message: err.message})
+     }
+      
+}
+
 module.exports={
 
-      signup
+      signup,
+      signin
 }
