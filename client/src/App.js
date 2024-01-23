@@ -8,6 +8,8 @@ import Projects from "./Pages/Projects";
 import Dashboard from "./Pages/Dashboard";
 import Navbar from "./components/Navbar";
 
+import Footer from "./components/Footer";
+
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
          <Route    path='/projects'   element={<Projects />} />
          <Route    path='/dashboard'   element={<Dashboard />} />
        </Routes>
+
+       <Footer />
     </BrowserRouter>
   );
 }

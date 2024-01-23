@@ -101,9 +101,9 @@ const [error , setError] = useState(null)
   }
   return (
    
-    <div className='max-w-2xl mx-auto p-3 flex flex-col md:flex-row gap-3 mt-20 items-center '>
+    <div className='max-w-3xl mx-auto p-3 flex flex-col md:flex-row gap-3 mt-20 items-center '>
 
-         <div className='  my-auto'>
+         <div >
             <h1 className='text-3xl font-bold'>Abdulla Blog</h1>
             <p className='mt-2'>You can sign up with your email and password or with Google.</p>
          </div>
@@ -118,7 +118,7 @@ const [error , setError] = useState(null)
 
 
 {error && (
-  <Alert color="failure" className='mb-5' >
+  <Alert color="failure" className='mb-2' >
        {error}
     </Alert>
    
@@ -126,7 +126,7 @@ const [error , setError] = useState(null)
 
 
 {success && (
-  <Alert color="success" className='mb-5' >
+  <Alert color="success" className='mb-2' >
        {success}
     </Alert>
    
