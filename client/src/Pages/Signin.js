@@ -66,13 +66,13 @@ const submitHandler = async (e)=>{
 
       if(data.success === true){
         
-
+        dispatch(signInSuccess({ user: data.user, message: data.message }));
          setTimeout(()=>{
 
               navigate('/')
          } , 2000)
 
-         return dispatch(signInSuccess(data.message));
+       
       
    }
 

@@ -17,10 +17,10 @@ const userSlice = createSlice({
       state.success = null;
     },
     signInSuccess: (state, action) => {
-      state.currentUser = action.payload;
+      state.currentUser = action.payload.user;
       state.loading = false;
       state.error = null;
-      state.success = action.payload;
+      state.success = action.payload.message; 
     },
     signInFailure: (state, action) => {
       state.loading = false;
