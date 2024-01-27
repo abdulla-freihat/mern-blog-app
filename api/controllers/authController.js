@@ -12,9 +12,12 @@ const signup = async (req, res , next)=>{
 
     if(!username || !email || !password || username==='' || email==='' || password===''){
 
-     return res.status(400).json({message : 'All fields are required!'})
+     return res.status(400).json({success:false  , message : 'Please fill out all fields.'})
                
     }
+
+
+   
 
     
 
@@ -53,7 +56,7 @@ const signin  = async(req, res)=>{
 
     if(!email || !password || email==='' || password===''){
 
-        return res.status(400).json({message : 'All fields are required!'})
+        return res.status(400).json({success:false , message : 'Please fill out all fields.'})
                   
        }
 
@@ -70,7 +73,7 @@ const signin  = async(req, res)=>{
 
      if(!user){
 
-          return res.status(400).json('User Not found')
+          return res.status(400).json({success : false , message: 'User Not Found. Please Sign Up'})
      }
 
 
@@ -79,7 +82,7 @@ const signin  = async(req, res)=>{
 
      if(!validPassword){
 
-        return res.status(400).json('Invalid email or password ')
+        return res.status(400).json({success : false , message :'Invalid password '})
 
      }
 
@@ -88,7 +91,7 @@ const signin  = async(req, res)=>{
 
           const token = jwt.sign({id : user._id} , process.env.JWT_SECRET);
 
-          res.cookie('access_token' , token , {httpOnly : true } ).status(201).json({success:true ,user});
+          res.cookie('access_token' , token , {httpOnly : true } ).status(201).json({success:true , message : "sign in successfull" , user});
 
           
 

@@ -35,12 +35,7 @@ const [error , setError] = useState(null)
 
       setSuccess(null);
 
-         if(!formData.username  || !formData.email || !formData.password ){
-
-            return setError('Please fill out all fields.')
-         }
-
-
+        
 
          // Validate password format
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
@@ -111,13 +106,9 @@ const [error , setError] = useState(null)
 
 <div className='w-full'>
          <form   onSubmit={submitHandler}>
-         <div className='flex flex-col  my-4'>
 
-
-
-
-
-{error && (
+                    
+         {error && (
   <Alert color="failure" className='mb-2' >
        {error}
     </Alert>
@@ -131,8 +122,9 @@ const [error , setError] = useState(null)
     </Alert>
    
 )}
-        
 
+
+         <div className='flex flex-col  my-4'>
        
             <Label value='Username' className='font-semibold mb-1 ' />
 
