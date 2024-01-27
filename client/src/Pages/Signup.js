@@ -3,6 +3,7 @@ import React from 'react'
 import { Button,  TextInput ,Label , Alert } from "flowbite-react";   
 import { Link } from 'react-router-dom';
 import { FaEye , FaRegEyeSlash } from "react-icons/fa";
+import OAuth from '../components/OAuth';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +50,7 @@ const [error , setError] = useState(null)
 
       try{
 
-        const res = await fetch ('http://localhost:8000/api/auth/signup' , {
+        const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/auth/signup` , {
     
          method:'POST',
          body:JSON.stringify(formData),
@@ -146,8 +147,7 @@ const [error , setError] = useState(null)
 
 
             <Button type='submit' className='border w-full my-2' gradientDuoTone='purpleToBlue'   >Sign Up</Button>
-            <Button className='border w-full my-2' gradientDuoTone='purpleToBlue'   outline  >Continue with google</Button>
-
+            <OAuth />
 
          </form>
 

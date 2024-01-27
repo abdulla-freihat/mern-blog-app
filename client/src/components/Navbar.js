@@ -3,7 +3,12 @@ import { Link  , useLocation} from 'react-router-dom';
 import { Button, Navbar as FlowbiteNavbar, TextInput } from "flowbite-react";   //FlowbiteNavbar is an alias name  it should be Navbar 
 import { AiOutlineSearch } from "react-icons/ai";
 import {FaMoon } from "react-icons/fa";
+import {useDispatch , useSelector} from "react-redux";
+
 const Navbar = () => {
+
+
+      const {currentUser} = useSelector(state=> state.user) 
 
     const path = useLocation().pathname;
   return (
@@ -26,9 +31,18 @@ const Navbar = () => {
         <FaMoon />
      </Button>
 
-      <Link to='/sign-in'>
+
+{currentUser ? 
+
+  ''
+      
+       : 
+
+  <Link to='/sign-in'>
         <Button className='border' gradientDuoTone='purpleToBlue' pill outline>Sign In</Button>
-      </Link>
+      </Link>   
+}
+      
 
       <FlowbiteNavbar.Toggle />
 

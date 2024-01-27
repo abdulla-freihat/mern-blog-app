@@ -105,8 +105,50 @@ const signin  = async(req, res)=>{
       
 }
 
+
+
+
+const google = async (req, res)=>{
+
+
+        const {email , name , googlePhotoUrl} = req.body;
+
+        try{
+
+             const user = await userSchema.findOne({email});
+             
+             if(user){
+
+                const token = jwt.sign({id : user._id} , process.env.JWT_SECRET);
+                res.cookie('access_token' , token , {httpOnly : true } ).status(201).json({success:true , message : "sign in successfull" , user});
+
+  
+             }else{
+
+                const generatedPassword = Math.random().toString(36).slice(-8) +  Math.random().toString(36).slice(-8);
+                const salt = await bcrypt.genSalt(10)
+                const hash = await bcrypt.hash(generatedPassword, salt);  
+        
+                const newUser = new userSchema({username : name.toLowerCase().split(" ").join("") + Math.random().toString(36).slice(-4)
+                  , email : email , password: hash , avatar:googlePhotoUrl});
+        
+                  await newUser.save();
+        
+                  const token = jwt.sign({id : newUser._id} , process.env.JWT_SECRET);
+                  res.cookie('access_token' , token , {httpOnly : true } ).status(200).json(newUser);
+        
+             
+           }
+
+        }catch(err){
+
+            res.status(400).json({success : false , message: err.message})  
+        }
+}
+
 module.exports={
 
       signup,
-      signin
+      signin,
+      google
 }

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { signInStart , signInSuccess , signInFailure } from '../redux/userSlice';
 import {useDispatch , useSelector} from "react-redux";
+import OAuth from '../components/OAuth';
 
 const Signin = () => {
 
@@ -41,7 +42,7 @@ const submitHandler = async (e)=>{
   try{
     dispatch(signInStart());
 
-    const res = await fetch ('http://localhost:8000/api/auth/signin' , {
+    const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/auth/signin` , {
 
      credentials : 'include' , 
      method:'POST',
@@ -132,8 +133,7 @@ const submitHandler = async (e)=>{
 
 
             <Button type='submit' className='border w-full my-2' gradientDuoTone='purpleToBlue'   >Sign In</Button>
-            <Button className='border w-full my-2' gradientDuoTone='purpleToBlue'   outline  >Continue with google</Button>
-
+                <OAuth />
 
          </form>
 
