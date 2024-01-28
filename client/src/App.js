@@ -9,6 +9,7 @@ import Dashboard from "./Pages/Dashboard";
 import Navbar from "./components/Navbar";
 
 import Footer from "./components/Footer";
+import PrivateRoute from "./components/PrivateRoute";
 
 
 function App() {
@@ -21,7 +22,11 @@ function App() {
          <Route    path='/sign-in'   element={<Signin />} />
          <Route    path='/sign-up'   element={<Signup />} />
          <Route    path='/projects'   element={<Projects />} />
+         
+         <Route    element={<PrivateRoute/>} >
          <Route    path='/dashboard'   element={<Dashboard />} />
+         </Route>
+         
        </Routes>
 
        <Footer />
