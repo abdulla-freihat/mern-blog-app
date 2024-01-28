@@ -32,7 +32,7 @@ const app = express();
 app.use(express.json());//allow json as the input in backend
 
 app.use(cors({
-        origin: 'http://localhost:3001', // Replace with your frontend origin
+        origin: 'http://localhost:3002', // Replace with your frontend origin
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true, // Enable credentials (if you are using cookies, sessions, or other authentication)
       }));
