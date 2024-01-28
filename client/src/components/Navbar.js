@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link  , useLocation} from 'react-router-dom';
-import { Button, Navbar as FlowbiteNavbar, TextInput } from "flowbite-react";   //FlowbiteNavbar is an alias name  it should be Navbar 
+import { Button, Navbar as FlowbiteNavbar, TextInput , Dropdown , Avatar } from "flowbite-react";   //FlowbiteNavbar is an alias name  it should be Navbar 
 import { AiOutlineSearch } from "react-icons/ai";
 import {FaMoon } from "react-icons/fa";
 import {useDispatch , useSelector} from "react-redux";
@@ -34,14 +34,50 @@ const Navbar = () => {
 
 {currentUser ? 
 
-  ''
+(
+   <Dropdown
+      arrowIcon={false}
+      inline 
+      label={
+
+         <Avatar 
+
+           rounded
+           alt = 'user'
+           img={currentUser.avatar}
+         />
+      }
+   >
+
+
+  <Dropdown.Header>
+
+     <span className=' my-1 block text-sm'>@{currentUser.username}</span> 
+     <span className=' my-1 block text-sm truncate font-medium'>{currentUser.email}</span>
       
-       : 
+   </Dropdown.Header>
+   <Link to='/dashboard?tab=profile'>
+    <Dropdown.Item>
+        Profile
+    </Dropdown.Item>
+   </Link>
+ <Dropdown.Divider />
+   
+    <Dropdown.Item>
+        Sign Out
+    </Dropdown.Item>
+   
+
+   </Dropdown>
+
+   
+
+) : (
 
   <Link to='/sign-in'>
         <Button className='border' gradientDuoTone='purpleToBlue' pill outline>Sign In</Button>
       </Link>   
-}
+)}
       
 
       <FlowbiteNavbar.Toggle />
