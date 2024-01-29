@@ -91,6 +91,8 @@ const Navbar = () => {
     
 
     <FlowbiteNavbar.Collapse>
+
+  
            <FlowbiteNavbar.Link active={path === '/'} as={'div'} >
             <Link to='/'>Home</Link>
             </FlowbiteNavbar.Link>
