@@ -1,9 +1,14 @@
-import React from 'react'
+import React , {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector , useDispatch } from 'react-redux'
-import { TextInput  , Button} from 'flowbite-react'
+import { TextInput  , Button , Alert} from 'flowbite-react'
 import { signoutStart , signoutSuccess , signoutFailure } from '../redux/userSlice'
 import { useNavigate } from 'react-router-dom'
+import { useRef } from 'react'
+import {getDownloadURL, getStorage, uploadBytesResumable , ref} from 'firebase/storage'
+import {app} from '../firebase'
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 
 const DashProfile = () => {
@@ -11,12 +16,94 @@ const DashProfile = () => {
   const {currentUser} = useSelector(state => state.user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const fileRef =useRef();
+  const [imageFile , setImageFile] = useState(null);
+  const [fileImageUrl ,setFileImageUrl] = useState(null)
+  const [imageFileUploadProgress , setImageFileUploadProgress] = useState(null)
+  const [imageFileUploadError , setImageFileUploadError] = useState(null)
 
 
 
 
 
+useEffect(()=>{
 
+   if(imageFile){
+
+     uploadImage()
+   }
+}, [imageFile])
+
+
+
+const uploadImage = async ()=>{
+
+ // service firebase.storage {
+ //   match /b/{bucket}/o {
+ //     match /{allPaths=**} {
+ //       allow read;
+ //       allow write: if
+ //       request.resource.size < 2 * 1024 * 1024 &&
+ //       request.resource.contentType.matches('image/.*')
+ //       
+ //     }
+ //   }
+ // }
+
+
+setImageFileUploadError(null)
+ const storage = getStorage(app);
+
+ const fileName = new Date().getTime() + imageFile.name; 
+
+ const storageRef = ref(storage , fileName);
+
+ const uploadTask = uploadBytesResumable(storageRef , imageFile);
+
+ uploadTask.on(
+   'state_changed',
+   (snapshot)=>{
+
+     const progress =
+      (snapshot.bytesTransferred / snapshot.totalBytes ) * 100;
+
+      setImageFileUploadProgress(progress.toFixed(0))
+
+   },
+   (error)=>{
+
+      setImageFileUploadError('Could not upload image (file must be less than 2MB)')
+      setImageFileUploadProgress(null)
+      setImageFile(null)
+      setFileImageUrl(null)
+   },
+
+
+
+   ()=>{
+
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
+
+         setFileImageUrl(downloadURL)
+      })
+   }
+ )
+     
+}
+
+
+const handleImageChange = (e)=>{
+       const file = e.target.files[0];
+
+       if(file){
+        setImageFile(file);
+        setFileImageUrl(URL.createObjectURL(file));
+       }
+
+       
+       
+
+}
 
 
   const signoutHandler = async()=>{
@@ -55,18 +142,40 @@ const DashProfile = () => {
     <form  className='flex  flex-col gap-2 '>
     
 
-<input  type="file" className='hidden'  />
-<div className='m-auto'>
-<img src={currentUser.avatar}   className='cursor-pointer m-auto w-16 h-16 sm:w-20 sm:h-20 object-cover hover:opacity-75 rounded-full'  alt="profile image" />
+<input  type="file" className='hidden' accept='image/*'  ref={fileRef} onChange={handleImageChange} />
+<div onClick={()=>fileRef.current.click()}   className='relative m-auto bg-gray-300 p-1 rounded-full'>
 
+{imageFileUploadProgress && (
 
+  <CircularProgressbar value={imageFileUploadProgress || 0}  text={`${imageFileUploadProgress}%`}  
+  strokeWidth={5} 
+  styles={{
+    root:{
+       width:'100%',
+       height:'100%',
+       position : 'absolute',
+       top:0,
+       left:0
+    },
+    path:{
 
-
+      stroke : `rgba(62 , 152 , 199 , ${imageFileUploadProgress / 100})`
+    },
+  }}/>
+)}
+<img  src={fileImageUrl||  currentUser.avatar}   className={`cursor-pointer m-auto w-16 h-16 sm:w-24 sm:h-24 object-cover hover:opacity-75 rounded-full ${imageFileUploadProgress && imageFileUploadProgress <100 && 'opacity-60' } `}   />
 
     </div>
 
-    <TextInput defaultValue={currentUser.username} id='username' type="text" placeholder='Username' className='outline-none  p-3 ' id="username"  />
-    <TextInput defaultValue={currentUser.email}  id='email' type="email" placeholder='Email ' className='outline-none  p-3 ' id="email"   />
+ {imageFileUploadError && (
+  <Alert color='failure' >
+       {imageFileUploadError}
+     </Alert>
+ )}
+    
+
+    <TextInput defaultValue={currentUser.username} id='username' type="text" placeholder='Username' className='outline-none  p-3 '   />
+    <TextInput defaultValue={currentUser.email}  id='email' type="email" placeholder='Email ' className='outline-none  p-3 '    />
     <TextInput type="password"  placeholder='Password' id='password' className='outline-none  p-3 '     />
 
   <Button type='submit' gradientDuoTone='purpleToBlue'>update profile</Button>
