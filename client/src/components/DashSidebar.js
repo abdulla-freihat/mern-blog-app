@@ -6,11 +6,17 @@ import { useState , useEffect } from 'react'
 
 import {useLocation} from 'react-router-dom'
 import { Link } from 'react-router-dom';
+import { signoutStart , signoutSuccess , signoutFailure } from '../redux/userSlice'
+import { useNavigate } from 'react-router-dom'
+import {useDispatch , useSelector} from "react-redux";
+
 
 
 const DashSidebar = () => {
 
     const loctaion = useLocation();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [tab , setTab] = useState('');
 
@@ -24,6 +30,38 @@ const DashSidebar = () => {
      }
      
     } , [window.location.search])
+
+
+
+    const signoutHandler = async()=>{
+ 
+ 
+      dispatch(signoutStart());
+    
+      const res = await fetch(`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/auth/logout`  ,{
+   
+      credentials: 'include'
+      });
+   
+      const data = await res.json();
+      if(data.success === false){
+   
+        dispatch(signoutFailure(data.message));
+           return;
+      }
+   
+      if(data.success === true){
+          
+        dispatch(signoutSuccess(data));
+       
+  
+              navigate('/sign-in')
+       
+      
+           
+   }
+  
+  }
   return (
     <Sidebar className='w-full md:w-56'>
     <Sidebar.Items>
@@ -34,7 +72,7 @@ const DashSidebar = () => {
         </Sidebar.Item>
         </Link>
       
-        <Sidebar.Item   icon={HiArrowSmRight} className='cursor-pointer'>
+        <Sidebar.Item onClick={signoutHandler}   icon={HiArrowSmRight} className='cursor-pointer'>
          Logout
         </Sidebar.Item>
         

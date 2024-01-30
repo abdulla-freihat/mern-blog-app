@@ -154,7 +154,7 @@ const logout = async (req, res)=>{
          try{
 
             res.clearCookie('access_token');
-            res.status(200).json('User has been logout');
+            res.status(200).json({success:true, message:'User has been logout' });
                
          }catch(err){
 

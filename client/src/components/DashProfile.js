@@ -1,11 +1,54 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector , useDispatch } from 'react-redux'
 import { TextInput  , Button} from 'flowbite-react'
+import { signoutStart , signoutSuccess , signoutFailure } from '../redux/userSlice'
+import { useNavigate } from 'react-router-dom'
+
 
 const DashProfile = () => {
 
   const {currentUser} = useSelector(state => state.user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+
+
+
+
+
+
+  const signoutHandler = async()=>{
+ 
+ 
+    dispatch(signoutStart());
+  
+    const res = await fetch(`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/auth/logout`  ,{
+ 
+    credentials: 'include'
+    });
+ 
+    const data = await res.json();
+    if(data.success === false){
+ 
+      dispatch(signoutFailure(data.message));
+         return;
+    }
+ 
+    if(data.success === true){
+        
+      dispatch(signoutSuccess(data));
+      
+
+            navigate('/sign-in')
+
+    
+         
+ }
+
+}
+
   return (
     <div  className='p-3 max-w-lg mx-auto w-full'>
     <h1 className=' text-xl sm:text-3xl text-center font-bold my-3'>Profile</h1>
@@ -37,7 +80,7 @@ const DashProfile = () => {
     </form>
 
     <div className='mt-3 text-right'>
-    <p  className=' underline  cursor-pointer'>Sign Out</p>
+    <p onClick={signoutHandler}  className=' underline  cursor-pointer'>Sign Out</p>
     </div>
 
    

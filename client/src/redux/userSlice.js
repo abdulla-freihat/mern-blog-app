@@ -26,11 +26,32 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.success = null;
-    }
+    },
+    signoutStart:(state)=>{
+
+      state.loading = true
+      state.error = null;
+     
+ },
+
+ signoutSuccess : (state , action)=>{
+
+      state.currentUser = null;
+      state.loading = false;
+      state.error  = null ;
+
+
+ },
+ signoutFailure : (state , action)=>{
+   state.error= action.payload;
+   state.loading = false;
+
+    
+ }
   }
 });
 
-export const { signInStart, signInSuccess, signInFailure } = userSlice.actions;
+export const { signInStart, signInSuccess, signInFailure , signoutStart , signoutSuccess , signoutFailure } = userSlice.actions;
 export default userSlice.reducer;
 
 

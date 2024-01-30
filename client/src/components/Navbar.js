@@ -5,6 +5,8 @@ import { AiOutlineSearch } from "react-icons/ai";
 import {FaMoon , FaSun } from "react-icons/fa";
 import {useDispatch , useSelector} from "react-redux";
 import {toggleTheme} from '../redux/themeSlice'
+import { signoutStart , signoutSuccess , signoutFailure } from '../redux/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
 
@@ -12,8 +14,42 @@ const Navbar = () => {
       const {currentUser} = useSelector(state=> state.user) 
       const {theme} = useSelector(state=>state.theme)
       const dispatch = useDispatch();
+      const navigate = useNavigate();
 
     const path = useLocation().pathname;
+
+
+
+
+    const signoutHandler = async()=>{
+ 
+ 
+      dispatch(signoutStart());
+    
+      const res = await fetch(`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/auth/logout`  ,{
+   
+      credentials: 'include'
+      });
+   
+      const data = await res.json();
+      if(data.success === false){
+   
+        dispatch(signoutFailure(data.message));
+           return;
+      }
+   
+      if(data.success === true){
+          
+        dispatch(signoutSuccess(data));
+       
+  
+              navigate('/sign-in')
+       
+      
+           
+   }
+  
+  }
   return (
 
     <FlowbiteNavbar className='border-b-2 w-full'>
@@ -66,7 +102,7 @@ const Navbar = () => {
    </Link>
  <Dropdown.Divider />
    
-    <Dropdown.Item>
+    <Dropdown.Item onClick={signoutHandler}>
         Sign Out
     </Dropdown.Item>
    
