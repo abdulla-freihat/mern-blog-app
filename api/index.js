@@ -8,6 +8,7 @@ dotenv.config({path:__dirname+'/.env'});
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 
 
 
@@ -29,7 +30,10 @@ mongoose.connect(db)
 
 
 const app = express();
+
 app.use(express.json());//allow json as the input in backend
+
+
 
 app.use(cors({
         origin: 'http://localhost:3000', // Replace with your frontend origin
@@ -37,7 +41,7 @@ app.use(cors({
         credentials: true, // Enable credentials (if you are using cookies, sessions, or other authentication)
       }));
 
-
+app.use(cookieParser());
 
 app.listen(process.env.PORT, ()=>{
 
