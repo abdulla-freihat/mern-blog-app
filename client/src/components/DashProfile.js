@@ -294,8 +294,10 @@ const handleSubmit= async (e)=>{
 
     </form>
 
-    <div className='mt-3 text-right'>
+    <div className='mt-3 flex justify-between'>
+    <p   className=' underline  cursor-pointer'>Delete Account</p>
     <p onClick={signoutHandler}  className=' underline  cursor-pointer'>Sign Out</p>
+    
     </div>
 
    

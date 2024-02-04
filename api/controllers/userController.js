@@ -58,7 +58,33 @@ try{
      
 }
 
+
+
+const deleteUser = async (req , res )=>{
+
+if(req.user.id !== req.params.id){
+
+
+    return res.status(403).json({success:false , message:'You are not allowed to delete this user.'})
+
+}
+       
+
+     try{
+
+        const deleteUser = await userSchema.findByIdAndDelete(req.params.id);
+        res.status(200).json({success:true , message: 'User deleted successfully' ,   deleteUser})
+
+         
+     }catch(err){
+
+        res.status(400).json({success : false , message: err.message})  
+    
+    }
+}
+
 module.exports={
      test,
-      updateUser
+      updateUser,
+      deleteUser
 }
