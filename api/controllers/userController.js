@@ -22,15 +22,15 @@ if(req.body.password){
 
 if(req.body.username){
 
-     if(req.body.username < 7 ||req.body.username > 20 ){
+     if(req.body.username.length < 5 ||req.body.username.length > 20 ){
 
-        return res.status(400).json({success:false , message:'User name must be between 7 and 20 characters.'})
+        return res.status(400).json({success:false , message:'User name must be between 5 and 20 characters.'})
 
      }
 
-     if(req.body.username.inclidea('')){
+     if(req.body.username.includes(' ')){
 
-        return res.status(400).json({success:false , message:'User name connot contain spaces.'})
+        return res.status(400).json({success:false , message:'User name cannot contain spaces.'})
 
      }
 }
@@ -49,7 +49,7 @@ try{
          }   
      } , {new:true}) //send the new informations
 
-     res.status(200).json(updateUser)
+     res.status(200).json({success:true , message: 'User updated successfully' ,   updateUser})
 }catch(err){
 
     res.status(400).json({success : false , message: err.message})  

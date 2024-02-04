@@ -10,6 +10,9 @@ import {app} from '../firebase'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+import { updateUserStart , updateUserSuccess , updateUserFailure } from '../redux/userSlice'
+
+
 
 const DashProfile = () => {
 
@@ -21,6 +24,12 @@ const DashProfile = () => {
   const [fileImageUrl ,setFileImageUrl] = useState(null)
   const [imageFileUploadProgress , setImageFileUploadProgress] = useState(null)
   const [imageFileUploadError , setImageFileUploadError] = useState(null)
+
+  const [formData , setFormData] = useState({});
+
+const [updateUserSuccessAlert , setUpdateUserSuccessAlert ] = useState(null);
+const [updateUserFailureAlert , setUpdateUserFailureAlert ] = useState(null);
+
 
 
 
@@ -85,6 +94,8 @@ setImageFileUploadError(null)
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
 
          setFileImageUrl(downloadURL)
+
+         setFormData({...formData , avatar:downloadURL})
       })
    }
  )
@@ -104,6 +115,74 @@ const handleImageChange = (e)=>{
        
 
 }
+
+
+
+const handleChange =(e)=>{
+
+   setFormData({...formData , [e.target.id]:e.target.value})
+}
+
+
+
+const handleSubmit= async (e)=>{
+
+      e.preventDefault();
+      setUpdateUserSuccessAlert(null)
+      setUpdateUserFailureAlert(null)
+
+  
+
+      if(Object.keys(formData).length === 0){
+          setUpdateUserFailureAlert('No changes made.')
+         return;
+      }
+
+
+       try{
+           
+        dispatch(updateUserStart());
+
+        const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/user/update/${currentUser._id}` , {
+
+          credentials : 'include' , 
+          method:'PUT',
+          body:JSON.stringify(formData),
+         
+     
+           headers: {
+             "content-type": "application/json"
+           }
+     
+         })
+
+         const data = await res.json();
+
+         if(data.success === false){
+          dispatch(updateUserFailure(data.message));
+          
+          setUpdateUserFailureAlert(data.message)
+           
+        }
+  
+  
+        if(data.success === true){
+          
+          dispatch(updateUserSuccess({ user: data.updateUser, message: data.message }));
+           setUpdateUserSuccessAlert(data.message)
+        
+          }  
+
+
+       }catch(err){
+
+        updateUserFailure(err.message)
+        setUpdateUserFailureAlert(err.message)
+       }
+}
+
+
+
 
 
   const signoutHandler = async()=>{
@@ -136,11 +215,28 @@ const handleImageChange = (e)=>{
 
 }
 
+
+
+
   return (
     <div  className='p-3 max-w-lg mx-auto w-full'>
     <h1 className=' text-xl sm:text-3xl text-center font-bold my-3'>Profile</h1>
-    <form  className='flex  flex-col gap-2 '>
+    <form onSubmit={handleSubmit}  className='flex  flex-col gap-2 '>
     
+    {updateUserFailureAlert && (
+       <Alert color="failure" className='mb-2' >
+        {updateUserFailureAlert}
+       </Alert>
+   
+       )}
+
+
+   {updateUserSuccessAlert && (
+     <Alert color="success" className='mb-2' >
+       {updateUserSuccessAlert}
+    </Alert>
+   
+    )}
 
 <input  type="file" className='hidden' accept='image/*'  ref={fileRef} onChange={handleImageChange} />
 <div onClick={()=>fileRef.current.click()}   className='relative m-auto bg-gray-300 p-1 rounded-full'>
@@ -174,9 +270,9 @@ const handleImageChange = (e)=>{
  )}
     
 
-    <TextInput defaultValue={currentUser.username} id='username' type="text" placeholder='Username' className='outline-none  p-3 '   />
-    <TextInput defaultValue={currentUser.email}  id='email' type="email" placeholder='Email ' className='outline-none  p-3 '    />
-    <TextInput type="password"  placeholder='Password' id='password' className='outline-none  p-3 '     />
+    <TextInput defaultValue={currentUser.username} id='username' type="text" placeholder='Username' className='outline-none  p-3 ' onChange={handleChange}   />
+    <TextInput defaultValue={currentUser.email}  id='email' type="email" placeholder='Email ' className='outline-none  p-3 '  onChange={handleChange}    />
+    <TextInput type="password"  placeholder='Password' id='password' className='outline-none  p-3 '      onChange={handleChange} />
 
   <Button type='submit' gradientDuoTone='purpleToBlue'>update profile</Button>
         

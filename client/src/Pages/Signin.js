@@ -14,6 +14,8 @@ const Signin = () => {
 
   const [formData , setFormData] = useState({});
   const {loading , error , success} = useSelector(state => state.user);
+  const [signinSuccessAlert , setSigninSuccessAlert  ] = useState(null);
+  const [signinFailureAlert , setSigninFailureAlert ] = useState(null);
     const navigate= useNavigate();
     const dispatch = useDispatch();
 
@@ -35,7 +37,8 @@ const submitHandler = async (e)=>{
 
 
 
-     
+  setSigninSuccessAlert(null)
+  setSigninFailureAlert(null)
  
 
 
@@ -61,6 +64,8 @@ const submitHandler = async (e)=>{
 
       if(data.success === false){
         dispatch(signInFailure(data.message));
+
+        setSigninFailureAlert(data.message)
          
       }
 
@@ -68,6 +73,7 @@ const submitHandler = async (e)=>{
       if(data.success === true){
         
         dispatch(signInSuccess({ user: data.user, message: data.message }));
+        setSigninSuccessAlert(data.message)
          setTimeout(()=>{
 
               navigate('/')
@@ -85,7 +91,7 @@ const submitHandler = async (e)=>{
 
   signInFailure(err.message)
 
-
+  setSigninFailureAlert(err.message)
   }
 }
 
@@ -103,17 +109,17 @@ const submitHandler = async (e)=>{
          <form   onSubmit={submitHandler}>
 
 
-         {error && (
+         {signinFailureAlert && (
        <Alert color="failure" className='mb-2' >
-        {error}
+        {signinFailureAlert}
        </Alert>
    
        )}
 
 
-   {success && (
+   {signinSuccessAlert && (
      <Alert color="success" className='mb-2' >
-       {success}
+       {signinSuccessAlert}
     </Alert>
    
     )}
