@@ -131,12 +131,22 @@ const handleSubmit= async (e)=>{
       setUpdateUserSuccessAlert(null)
       setUpdateUserFailureAlert(null)
 
+
+
   
 
       if(Object.keys(formData).length === 0){
           setUpdateUserFailureAlert('No changes made.')
          return;
       }
+
+               // Validate password format
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+  const isValidPassword = passwordRegex.test(formData.password);
+
+  if (!isValidPassword) {
+    return   setUpdateUserFailureAlert('Password must be at least 6 characters with 1 uppercase letter and 1 number.');
+  }
 
 
        try{
