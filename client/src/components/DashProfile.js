@@ -1,7 +1,7 @@
 import React , {useEffect, useState} from 'react'
-import { Link } from 'react-router-dom'
+
 import { useSelector , useDispatch } from 'react-redux'
-import { TextInput  , Button , Alert} from 'flowbite-react'
+import { TextInput  , Button , Alert , Modal} from 'flowbite-react'
 import { signoutStart , signoutSuccess , signoutFailure } from '../redux/userSlice'
 import { useNavigate } from 'react-router-dom'
 import { useRef } from 'react'
@@ -9,8 +9,10 @@ import {getDownloadURL, getStorage, uploadBytesResumable , ref} from 'firebase/s
 import {app} from '../firebase'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-import { updateUserStart , updateUserSuccess , updateUserFailure } from '../redux/userSlice'
+
+import { updateUserStart , updateUserSuccess , updateUserFailure , deleteUserStart , deleteUserSuccess , deleteUserFailure } from '../redux/userSlice'
 
 
 
@@ -31,7 +33,9 @@ const [updateUserSuccessAlert , setUpdateUserSuccessAlert ] = useState(null);
 const [updateUserFailureAlert , setUpdateUserFailureAlert ] = useState(null);
 
 
-
+const [showModal , setShowModal] = useState(false);
+const [deleteUserSuccessAlert , setDeleteUserSuccessAlert ] = useState(null);
+const [deleteUserFailureAlert , setDeleteUserFailureAlert ] = useState(null);
 
 
 
@@ -140,14 +144,23 @@ const handleSubmit= async (e)=>{
          return;
       }
 
-               // Validate password format
+
+      const isPasswordUpdated = formData.password && formData.password.trim() !== '';
+
+ // If the password is updated, perform validation
+ if (isPasswordUpdated) {
+  // Validate password format
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
   const isValidPassword = passwordRegex.test(formData.password);
 
   if (!isValidPassword) {
-    return   setUpdateUserFailureAlert('Password must be at least 6 characters with 1 uppercase letter and 1 number.');
+      return setUpdateUserFailureAlert('Password must be at least 6 characters with 1 uppercase letter and 1 number.');
   }
+}
+ 
 
+
+ 
 
        try{
            
@@ -192,7 +205,54 @@ const handleSubmit= async (e)=>{
 }
 
 
+const deleteUserHandler= async()=>{
 
+  setShowModal(false)
+
+  setDeleteUserSuccessAlert(null)
+  setDeleteUserFailureAlert(null)
+
+
+  try{
+    dispatch(deleteUserStart())
+
+   const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/user/delete/${currentUser._id}` , {
+
+     credentials : 'include' , 
+     method:'DELETE',
+    })
+
+    const data = await res.json();
+
+    if(data.success === false){
+ 
+      dispatch(deleteUserFailure(data.message));
+      setUpdateUserFailureAlert(data.message)
+         return;
+    }
+
+
+    if(data.success === true){
+        
+      dispatch(deleteUserSuccess({user: data.deleteUser , message:data.message}));
+      setUpdateUserSuccessAlert(data.message)
+    
+           setTimeout(()=>{
+
+            navigate('/sign-in')
+           } , 2000)
+           
+
+       
+ }
+
+  }catch(err){
+
+    dispatch(deleteUserFailure(err.message))
+    setDeleteUserFailureAlert(err.message)
+  }
+            
+}
 
 
   const signoutHandler = async()=>{
@@ -217,7 +277,10 @@ const handleSubmit= async (e)=>{
       dispatch(signoutSuccess(data));
       
 
-            navigate('/sign-in')
+      setTimeout(()=>{
+
+        navigate('/sign-in')
+       } , 2000)
 
     
          
@@ -244,6 +307,22 @@ const handleSubmit= async (e)=>{
    {updateUserSuccessAlert && (
      <Alert color="success" className='mb-2' >
        {updateUserSuccessAlert}
+    </Alert>
+   
+    )}
+
+
+    {deleteUserFailureAlert && (
+       <Alert color="failure" className='mb-2' >
+        {deleteUserFailureAlert}
+       </Alert>
+   
+       )}
+
+
+   {deleteUserSuccessAlert && (
+     <Alert color="success" className='mb-2' >
+       {deleteUserSuccessAlert}
     </Alert>
    
     )}
@@ -295,13 +374,31 @@ const handleSubmit= async (e)=>{
     </form>
 
     <div className='mt-3 flex justify-between'>
-    <p   className=' underline  cursor-pointer'>Delete Account</p>
+    <p onClick={()=>setShowModal(true)}   className=' underline  cursor-pointer'>Delete Account</p>
     <p onClick={signoutHandler}  className=' underline  cursor-pointer'>Sign Out</p>
     
     </div>
 
    
     
+    <Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md'>
+  
+       <Modal.Header />
+       <Modal.Body>
+         <div className='text-center'>
+
+         <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
+
+          <h3 className='mb-4 text-gray-500 dark:text-gray-400'>Are you sure you want to delete your account?</h3>
+          <div className='flex gap-3 justify-center flex-wrap'>
+           <Button color='failure' onClick={deleteUserHandler}>Yes , I'm sure</Button>
+           <Button onClick={()=>setShowModal(false)} color='gray'>No , Cansel</Button>
+          </div>
+
+         </div>
+       </Modal.Body>
+
+    </Modal>
  
    
   
