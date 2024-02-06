@@ -89,7 +89,7 @@ const signin  = async(req, res)=>{
 
           //create token
 
-          const token = jwt.sign({id : user._id} , process.env.JWT_SECRET);
+          const token = jwt.sign({id : user._id , isAdmin : user.isAdmin} , process.env.JWT_SECRET);
 
           res.cookie('access_token' , token , {httpOnly : true } ).status(201).json({success:true , message : "sign in successfull" , user});
 
@@ -119,7 +119,7 @@ const google = async (req, res)=>{
              
              if(user){
 
-                const token = jwt.sign({id : user._id} , process.env.JWT_SECRET);
+                const token = jwt.sign({id : user._id , isAdmin : user.isAdmin} , process.env.JWT_SECRET);
                 res.cookie('access_token' , token , {httpOnly : true } ).status(201).json({success:true , message : "sign in successfull" , user});
 
   
@@ -134,7 +134,7 @@ const google = async (req, res)=>{
         
                   await newUser.save();
         
-                  const token = jwt.sign({id : newUser._id} , process.env.JWT_SECRET);
+                  const token = jwt.sign({id : newUser._id , isAdmin : newUser.isAdmin} , process.env.JWT_SECRET);
                   res.cookie('access_token' , token , {httpOnly : true } ).status(200).json(newUser);
         
              
