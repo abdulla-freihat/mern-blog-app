@@ -7,9 +7,11 @@ import Signup from "./Pages/Signup"
 import Projects from "./Pages/Projects";
 import Dashboard from "./Pages/Dashboard";
 import Navbar from "./components/Navbar";
-
+import CreatePost from "./Pages/CreatePost";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+
 
 
 function App() {
@@ -23,8 +25,14 @@ function App() {
          <Route    path='/sign-up'   element={<Signup />} />
          <Route    path='/projects'   element={<Projects />} />
          
+
+         
          <Route    element={<PrivateRoute/>} >
          <Route    path='/dashboard'   element={<Dashboard />} />
+         </Route>
+
+         <Route    element={<OnlyAdminPrivateRoute/>} >
+         <Route    path='/create-post'   element={<CreatePost />} />
          </Route>
          
        </Routes>

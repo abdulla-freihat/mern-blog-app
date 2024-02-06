@@ -1,5 +1,5 @@
 import React , {useEffect, useState} from 'react'
-
+import { Link } from 'react-router-dom'
 import { useSelector , useDispatch } from 'react-redux'
 import { TextInput  , Button , Alert , Modal} from 'flowbite-react'
 import { signoutStart , signoutSuccess , signoutFailure } from '../redux/userSlice'
@@ -294,7 +294,7 @@ const deleteUserHandler= async()=>{
   return (
     <div  className='p-3 max-w-lg mx-auto w-full'>
     <h1 className=' text-xl sm:text-3xl text-center font-bold my-3'>Profile</h1>
-    <form onSubmit={handleSubmit}  className='flex  flex-col gap-2 '>
+    <form onSubmit={handleSubmit}  className='flex  flex-col gap-4 '>
     
     {updateUserFailureAlert && (
        <Alert color="failure" className='mb-2' >
@@ -359,11 +359,15 @@ const deleteUserHandler= async()=>{
  )}
     
 
-    <TextInput defaultValue={currentUser.username} id='username' type="text" placeholder='Username' className='outline-none  p-3 ' onChange={handleChange}   />
-    <TextInput defaultValue={currentUser.email}  id='email' type="email" placeholder='Email ' className='outline-none  p-3 '  onChange={handleChange}    />
-    <TextInput type="password"  placeholder='Password' id='password' className='outline-none  p-3 '      onChange={handleChange} />
+    <TextInput defaultValue={currentUser.username} id='username' type="text" placeholder='Username' className='outline-none   ' onChange={handleChange}   />
+    <TextInput defaultValue={currentUser.email}  id='email' type="email" placeholder='Email ' className='outline-none  '  onChange={handleChange}    />
+    <TextInput type="password"  placeholder='Password' id='password' className='outline-none   '      onChange={handleChange} />
 
-  <Button type='submit' gradientDuoTone='purpleToBlue'>update profile</Button>
+  <Button className='w-full' type='submit' gradientDuoTone='purpleToBlue'>Update Profile</Button>
+
+
+
+ {currentUser.isAdmin && <Link to='/create-post'> <Button className='w-full'  gradientDuoTone='purpleToPink'>Create Post</Button> </Link> } 
         
        
 
