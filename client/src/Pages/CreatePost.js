@@ -8,9 +8,16 @@ import {app} from '../firebase'
 
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useSelector  } from 'react-redux'
+
+import { useNavigate } from 'react-router-dom'
+
+
+
 
 
 const CreatePost = () => {
+
 
 
   const [file , setFile] = useState(null);
@@ -19,8 +26,17 @@ const CreatePost = () => {
 
   const [imageUploadError , setImageUploadError] = useState(null)
 
+
+  
+
   const [formData , setFormData] = useState({});
 
+
+  const [createPostSuccessAlert , setCreatePostSuccessAlert ] = useState(null);
+
+  const [createPostErrorAlert , setCreatePostErrorAlert ] = useState(null)
+
+  const navigate = useNavigate();
 
 
 
@@ -83,18 +99,111 @@ const CreatePost = () => {
      }
 
   }
+
+
+  const handleChange = (e)=>{
+
+     setFormData({...formData , [e.target.id]:e.target.value} )
+  }
+
+
+
+const handleSubmit =async (e)=>{
+
+     e.preventDefault();
+     setCreatePostErrorAlert(null);
+     setCreatePostSuccessAlert(null);
+
+     try{
+
+      const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/post/create` , {
+
+        credentials : 'include' , 
+        method:'POST',
+        headers: {
+          "content-type": "application/json"
+        },
+        body:JSON.stringify(formData)
+
+       })
+
+       const data = await res.json();
+
+
+       if(data.success === false){
+
+        
+       
+        setCreatePostErrorAlert(data.message);
+
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
+        
+        return;
+       
+         
+      }
+
+
+      if(data.success === true){
+        
+       setCreatePostSuccessAlert(data.message);
+       setCreatePostErrorAlert(null);
+
+    
+
+       window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+
+        setTimeout(()=> {
+          navigate(`/post/${data.slug}`)
+
+        } ,2000)
+      
+      
+        }  
+
+     }catch(err){
+
+      setCreatePostErrorAlert(err.message);
+      setCreatePostSuccessAlert(null);
+     }
+}
+
   return (
     <div className='my-5'>
     
     <h1 className='text-gray-600 font-semibold text-3xl text-center'>CreatePost</h1>
 
-    <form className='my-4 max-w-2xl mx-auto flex flex-col gap-4 p-3'>
+    <form onSubmit={handleSubmit} className='my-4 max-w-2xl mx-auto flex flex-col gap-4 p-3'>
+
+
+    {createPostErrorAlert&& (
+       <Alert color="failure" className='mb-2' >
+        {createPostErrorAlert}
+       </Alert>
+   
+       )}
+
+
+   {createPostSuccessAlert && (
+     <Alert color="success" className='mb-2' >
+       {createPostSuccessAlert}
+    </Alert>
+   
+    )}
 
 
 <div className='flex flex-col gap-2 sm:flex-row'>
-    <TextInput id='title' type="text" placeholder='Tiltle' className='outline-none flex-1'    />
+    <TextInput id='title' type="text" placeholder='Tiltle' className='outline-none flex-1'  onChange={handleChange}  />
 
-    <Select>
+    <Select id='category' onChange={handleChange}>
         <option>uncategorized</option>
         <option>Javascript</option>
         <option>React.js</option>
@@ -106,7 +215,7 @@ const CreatePost = () => {
       <div className='flex  gap-2 border-2 border-dashed border-teal-500 p-3  '>
       <FileInput  className='flex-1'  id="file-upload" accept='image/*'  onChange={(e)=>setFile(e.target.files[0])}/>
 
-      <Button onClick={handleUploadImage}  type='submit' gradientDuoTone='purpleToBlue' outline disabled={imageUploadProgress}>
+      <Button onClick={handleUploadImage}   gradientDuoTone='purpleToBlue' outline disabled={imageUploadProgress}>
       {
         
         imageUploadProgress ? <div className='w-16 h-16'>
@@ -128,7 +237,7 @@ const CreatePost = () => {
       {imageUploadError && <Alert color='failure'>{imageUploadError}</Alert>}
       {formData.image && <img src={formData.image} alt='upload' className='w-full h-64 object-cover' />}
 
-      <ReactQuill theme="snow" placeholder='Write Something...'  className='h-72 mb-12' required/>
+      <ReactQuill onChange={(value) => {setFormData({...formData , description:value})}}  theme="snow" placeholder='Write Something...'  className='h-72 mb-12' required/>
 
       <Button   type='submit' gradientDuoTone='purpleToPink' >Publish</Button>
 

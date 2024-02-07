@@ -29,7 +29,7 @@ const slug = title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g ,
 
   try{
     const savePost =await newPost.save();
-    return res.status(201).json({success:true , message:'Post added successfully' , savePost});
+    return res.status(201).json({success:true , message:'Post added successfully' , savePost , slug});
 
 
   }catch(err){
