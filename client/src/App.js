@@ -15,6 +15,10 @@ import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 
 
 function App() {
+
+
+
+
   return (
     <BrowserRouter>
            <Navbar />
