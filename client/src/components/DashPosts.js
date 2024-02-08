@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 const DashPosts = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
+  const[showMore , setShowMore] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +15,9 @@ const DashPosts = () => {
         const data = await fetchPosts.json();
         if (data.success === true) {
           setUserPosts(data.posts);
+          if(data.posts.length < 9){
+             setShowMore(false)
+          }
         }
       } catch (err) {
         console.log(err.message);
@@ -31,6 +35,30 @@ const DashPosts = () => {
     const date = new Date(createdAt);
     return date.toISOString().split('T')[0];
   };
+
+
+  const handleShowMore = async()=>{
+
+       const startIndex =  userPosts.length;
+
+       try{
+
+         const fetchPosts = await fetch(`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/post/all-posts?userId=${currentUser._id}&startIndex=${startIndex}`);
+         const data = await fetchPosts.json();
+
+         if (data.success === true) {
+
+          setUserPosts((prev)=>[...prev ,...data.posts]);
+          if(data.posts.length < 9){
+            setShowMore(false)
+         }
+         
+         }
+
+       }catch(err){
+         console.log(err.message)
+       }
+  }
 
   return (
     <div className="overflow-x-auto w-full p-5">
@@ -71,6 +99,14 @@ const DashPosts = () => {
             ))}
           </Table.Body>
         </Table>
+
+    
+      )}
+
+
+      {showMore && (
+
+         <button  onClick={handleShowMore }className='self-center w-full text-teal-500 py-7'>Show More</button>     
       )}
     </div>
   );
