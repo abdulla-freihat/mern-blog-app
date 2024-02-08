@@ -5,7 +5,7 @@ import { BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitter } from 'react-
 
 const Footer = () => {
   return (
-    <FlowbiteFooter container className='mt-12'>
+    <FlowbiteFooter container className='mt-2'>
     <div className="w-full">
       <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
         <div>

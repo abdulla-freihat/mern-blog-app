@@ -80,7 +80,7 @@ const DashPosts = () => {
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {formatDate(item.updatedAt)}
                 </Table.Cell>
-                <Table.Cell><Link to={`/post/${item.slug}`}><img className="w-24 h-14 object-cover" src={item.image} alt={item.title} /></Link></Table.Cell>
+                <Table.Cell><Link to={`/post/${item.slug}`}><img className="w-32 h-14 object-cover" src={item.image} alt={item.title} /></Link></Table.Cell>
                 <Table.Cell><Link className='hover:underline text-gray-900 font-md dark:text-white' to={`/post/${item.slug}`}>{item.title}</Link></Table.Cell>
                 <Table.Cell className=' text-gray-900 font-md dark:text-white'>{item.category}</Table.Cell>
                 <Table.Cell>
