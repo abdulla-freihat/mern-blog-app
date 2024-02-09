@@ -126,8 +126,31 @@ try{
    
 }
 
+const getSinglePost = async (req , res)=>{
+
+const post = await postSchema.findOne({ slug: req.params.slug });
+try{
+
+  if(!post){
+
+    return res.status(403).json({ success: false, message: 'Post not found' });
+
+  }
+
+  res.status(200).json({ success: true, post });
+
+   
+}catch(err){
+
+  return res.status(400).json({ success: false, message: err.message});
+
+}
+      
+}
+
 module.exports={
    createPost,
    getAllPosts,
-   deletePost
+   deletePost,
+   getSinglePost
 }
