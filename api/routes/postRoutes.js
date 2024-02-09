@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/create' , verifyToken , createPost)
 router.get('/all-posts' ,getAllPosts )
-router.delete('/delete/:id' , verifyToken  , deletePost)
+router.delete('/delete/:postId/:userId' , verifyToken  , deletePost)
 
 
 module.exports = router;

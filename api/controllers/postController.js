@@ -104,15 +104,8 @@ const getAllPosts = async (req, res) => {
 
 const deletePost = async(req , res)=>{
 
-const post = await postSchema.findById(req.params.id);
 
-if(!post){
-
-  return res.status(403).json({ success: false, message: 'Post not found.'});
-
-}
-
-if(req.user.id !== post.userId){
+if(!req.user.isAdmin ||req.user.id !== req.params.userId){
 
   return res.status(401).json({ success: false, message: 'you can only delete your own posts.'});
 
@@ -120,7 +113,7 @@ if(req.user.id !== post.userId){
 
 try{
 
-  await postSchema.findByIdAndDelete(req.params.id);
+  await postSchema.findByIdAndDelete(req.params.postId);
   res.status(200).json({ success: true, message: 'post has been deleted'});
 
 
