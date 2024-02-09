@@ -102,8 +102,39 @@ const getAllPosts = async (req, res) => {
 };
 
 
+const deletePost = async(req , res)=>{
+
+const post = await postSchema.findById(req.params.id);
+
+if(!post){
+
+  return res.status(403).json({ success: false, message: 'Post not found.'});
+
+}
+
+if(req.user.id !== post.userId){
+
+  return res.status(401).json({ success: false, message: 'you can only delete your own posts.'});
+
+}
+
+try{
+
+  await postSchema.findByIdAndDelete(req.params.id);
+  res.status(200).json({ success: true, message: 'post has been deleted'});
+
+
+   
+}catch(err){
+
+  return res.status(400).json({ success: false, message: err.message});
+
+}
+   
+}
 
 module.exports={
    createPost,
-   getAllPosts
+   getAllPosts,
+   deletePost
 }
