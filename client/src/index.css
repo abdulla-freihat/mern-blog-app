@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+.post-content h2{
+
+     font-weight: bold;
+     font-size: 25px;
+      
+}
+
+

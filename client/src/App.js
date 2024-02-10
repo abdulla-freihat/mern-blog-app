@@ -11,6 +11,7 @@ import CreatePost from "./Pages/CreatePost";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+import SinglePost from "./Pages/SinglePost";
 
 
 
@@ -28,6 +29,7 @@ function App() {
          <Route    path='/sign-in'   element={<Signin />} />
          <Route    path='/sign-up'   element={<Signup />} />
          <Route    path='/projects'   element={<Projects />} />
+         <Route    path='/post/:slug'   element={<SinglePost />} />
          
 
          
@@ -38,6 +40,9 @@ function App() {
          <Route    element={<OnlyAdminPrivateRoute/>} >
          <Route    path='/create-post'   element={<CreatePost />} />
          </Route>
+
+
+
          
        </Routes>
 
