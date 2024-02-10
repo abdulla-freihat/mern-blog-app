@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import SinglePost from "./Pages/SinglePost";
+import UpdatePost from "./Pages/UpdatePost";
 
 
 
@@ -39,6 +40,7 @@ function App() {
 
          <Route    element={<OnlyAdminPrivateRoute/>} >
          <Route    path='/create-post'   element={<CreatePost />} />
+         <Route    path='/update-post/:postId'   element={<UpdatePost/>} />
          </Route>
 
 

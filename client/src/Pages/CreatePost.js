@@ -179,7 +179,7 @@ const handleSubmit =async (e)=>{
   return (
     <div className='my-5'>
     
-    <h1 className='text-gray-600 font-semibold text-3xl text-center'>CreatePost</h1>
+    <h1 className='text-gray-600 font-semibold text-3xl text-center dark:text-white'>CreatePost</h1>
 
     <form onSubmit={handleSubmit} className='my-4 max-w-2xl mx-auto flex flex-col gap-4 p-3'>
 

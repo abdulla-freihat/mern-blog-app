@@ -148,9 +148,48 @@ try{
       
 }
 
+
+
+
+const updatePost = async (req , res)=>{
+  if(!req.user.isAdmin ||req.user.id !== req.params.userId){
+
+    return res.status(401).json({ success: false, message: 'you can only update your own posts.'});
+  
+  }
+
+  try{
+
+    await postSchema.findByIdAndUpdate(
+      req.params.postId,
+      {
+         $set:{
+           title: req.body.title,
+           description: req.body.description,
+           category : req.body.category,
+           image :req.body.image
+         }},{new : true}
+      
+      
+      );
+    res.status(200).json({ success: true, message: 'post has been updated'});
+  
+  
+     
+  }catch(err){
+  
+    return res.status(400).json({ success: false, message: err.message});
+  
+  }
+   
+}
+
+
+
 module.exports={
    createPost,
    getAllPosts,
    deletePost,
-   getSinglePost
+   getSinglePost,
+   updatePost
 }

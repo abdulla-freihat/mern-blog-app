@@ -139,7 +139,7 @@ const DashPosts = () => {
                   </span>
                 </Table.Cell>
                 <Table.Cell>
-                <Link to={`/updtae-post/${item._id}`}>
+                <Link to={`/update-post/${item._id}`}>
                   <span  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                     EDIT
                   </span>
