@@ -1,6 +1,8 @@
 
 import { Sidebar } from 'flowbite-react';
 import { HiUser, HiArrowSmRight, HiDocumentText } from 'react-icons/hi';
+import { FaUsers } from "react-icons/fa";
+
 
 import { useState , useEffect } from 'react'
 
@@ -82,6 +84,18 @@ const DashSidebar = () => {
          Posts
         </Sidebar.Item>
         </Link>
+
+
+}
+
+
+{currentUser.isAdmin && 
+
+<Link to='/dashboard?tab=users'>
+      <Sidebar.Item active={tab=== 'users'} icon={FaUsers}  labelColor='dark' as={'div'}>
+      Users
+      </Sidebar.Item>
+      </Link>
 
 
 }

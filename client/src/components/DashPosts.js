@@ -127,12 +127,12 @@ const DashPosts = () => {
           <Table.Body className="divide-y">
             {currentUser.isAdmin && userPosts.map((item, index) => (
               <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 ">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                <Table.Cell className="whitespace-nowrap text-gray-500 dark:text-white">
                   {formatDate(item.updatedAt)}
                 </Table.Cell>
                 <Table.Cell><Link to={`/post/${item.slug}`}><img className="w-32 h-14 object-cover" src={item.image} alt={item.title} /></Link></Table.Cell>
-                <Table.Cell><Link className='hover:underline text-gray-900 font-md dark:text-white' to={`/post/${item.slug}`}>{item.title}</Link></Table.Cell>
-                <Table.Cell className=' text-gray-900 font-md dark:text-white'>{item.category}</Table.Cell>
+                <Table.Cell><Link className='hover:underline text-gray-500 font-md dark:text-white' to={`/post/${item.slug}`}>{item.title}</Link></Table.Cell>
+                <Table.Cell className=' text-gray-500 font-md dark:text-white'>{item.category}</Table.Cell>
                 <Table.Cell>
                   <span onClick={()=>{ setShowModal(true); setPostIdToDelete(item._id); }}  className="font-medium text-red-600 hover:underline dark:text-red-500 cursor-pointer">
                     DELETE
@@ -156,14 +156,14 @@ const DashPosts = () => {
 
       {showMore && (
 
-         <button  onClick={handleShowMore }className='self-center w-full text-teal-500 py-7'>Show More</button>     
+         <button  onClick={handleShowMore } className='self-center w-full text-teal-500 py-7'>Show More</button>     
       )}
 
 
 
 
 
-      <Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md'>
+      <Modal onClick={()=>setShowModal(false)}  show={showModal} onClose={()=>setShowModal(false)} popup size='md'>
   
        <Modal.Header />
        <Modal.Body>
