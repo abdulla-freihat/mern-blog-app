@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 
+body{
 
+      height: 100vh;
+}
 
 .post-content h2{
 

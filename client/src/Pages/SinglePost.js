@@ -5,11 +5,14 @@ import { useState , useEffect } from 'react'
 import { Link, useParams } from "react-router-dom"
 
 import CallToAction from '../components/CallToAction';
-
+import PostCard from '../components/PostCard';
 
 const SinglePost = () => {
 
     const [singlePost , setSinglePost] = useState(null)
+
+    const [recentPosts , setRecentPosts] = useState(null);
+
 
     
     const params = useParams();
@@ -22,7 +25,7 @@ const SinglePost = () => {
             const data = await fetchPosts.json();
           
             if (data.success === true) {
-                console.log(data)
+             
                 setSinglePost(data.post);
             }
           } catch (err) {
@@ -35,6 +38,40 @@ const SinglePost = () => {
    
         
       }, [params.slug]);
+
+
+
+
+      useEffect(()=>{
+
+       try{
+
+
+        const fetchData = async () => {
+          try {
+            const fetchPosts = await fetch(`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/post/all-posts?limit=3`);
+            const data = await fetchPosts.json();
+          
+            if (data.success === true) {
+              
+                setRecentPosts(data.posts);
+            }
+          } catch (err) {
+            console.log(err.message);
+          }
+        };
+    
+       
+          fetchData();
+
+       }catch(err){
+
+         console.log(err)
+       }
+
+
+
+      }, [])
   return (
     <div>
         { singlePost &&
@@ -74,6 +111,19 @@ const SinglePost = () => {
 
            <CallToAction />
 
+          </div>
+
+
+
+          <div className='flex flex-col justify-center items-center mb-5'>
+             <h1 className='text-2xl mt-5'>Recent Articles</h1>
+
+             <div className='grid  sm:grid-cols-1  md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-5 max-w-6xl mx-auto mt-5 p-3'>
+                   {recentPosts && recentPosts.map((item , index)=>(
+
+                           <PostCard key={index} title={item.title} category={item.category} image={item.image} slug={item.slug} />
+                   ))}
+             </div>
           </div>
     </div>
   )

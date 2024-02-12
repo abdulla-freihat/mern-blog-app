@@ -8,10 +8,11 @@ const CallToAction = () => {
              <h2 className='text-3xl'>Want to learn more about javascript?</h2>
 
              <p className='text-gray-500 dark:text-white'>Checkout this resources with 100 javascript resources.</p>
-
-             <Button gradientDuoTone='purpleToPink' >
-             <a href='https://www.100jsprojects.com' target="_blank" rel='noopener noreferrer'>100 javascript projects</a> 
+             <a href='https://www.100jsprojects.com' target="_blank" rel='noopener noreferrer' className=''>
+             <Button gradientDuoTone='purpleToPink' className='w-full' >
+             100 javascript projects
              </Button>
+             </a> 
         </div>
 
         <div className=' flex-1 p-6'>
