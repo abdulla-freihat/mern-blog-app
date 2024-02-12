@@ -58,6 +58,7 @@ const Navbar = () => {
     <form>
 
           <TextInput  type='text' placeholder='Search...'  rightIcon={AiOutlineSearch} className='hidden lg:inline '/>
+        
 
     </form>
     <Button className='w-12 h-10  lg:hidden ' color="gray" pill>
@@ -66,7 +67,7 @@ const Navbar = () => {
 
     <div className='flex gap-2 md:order-2 '>
 
-     <Button  color='gray ' className='w-12 h-10   hidden border  sm:inline' pill  onClick={()=>dispatch(toggleTheme())}>
+     <Button  color='gray ' className='w-12 h-10   border  ' pill  onClick={()=>dispatch(toggleTheme())}>
        {theme === 'light' ? <FaSun  />   : <FaMoon /> } 
      </Button>
 

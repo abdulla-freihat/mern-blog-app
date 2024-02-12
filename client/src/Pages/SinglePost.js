@@ -4,6 +4,8 @@ import { Button} from 'flowbite-react';
 import { useState , useEffect } from 'react'
 import { Link, useParams } from "react-router-dom"
 
+import CallToAction from '../components/CallToAction';
+
 
 const SinglePost = () => {
 
@@ -52,7 +54,7 @@ const SinglePost = () => {
          <img  className='my-5' src={singlePost.image} alt={singlePost.title}  />
          
 
-               <div className='max-w-2xl mx-auto'>
+               <div className='max-w-2xl mx-auto '>
 
                     <div className='text-sm p-2 border-b  flex justify-between'>
                         <span>{new Date(singlePost.createdAt).toLocaleDateString() }</span> 
@@ -66,6 +68,13 @@ const SinglePost = () => {
          </div>
          
          }
+
+
+          <div className='max-w-4xl mx-auto p-3'>
+
+           <CallToAction />
+
+          </div>
     </div>
   )
 }
