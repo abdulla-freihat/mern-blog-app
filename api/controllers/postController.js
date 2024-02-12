@@ -160,19 +160,20 @@ const updatePost = async (req , res)=>{
 
   try{
 
-    await postSchema.findByIdAndUpdate(
+   const updatedPost =  await postSchema.findByIdAndUpdate(
       req.params.postId,
       {
          $set:{
            title: req.body.title,
            description: req.body.description,
            category : req.body.category,
-           image :req.body.image
+           image :req.body.image,
+          
          }},{new : true}
       
       
       );
-    res.status(200).json({ success: true, message: 'post has been updated'});
+    res.status(200).json({ success: true, message: 'post has been updated' , updatedPost , slug : req.body.slug });
   
   
      

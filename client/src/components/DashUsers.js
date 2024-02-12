@@ -56,6 +56,11 @@ const DashUsers = () => {
 
 
 
+
+
+
+
+
   const handleShowMore = async()=>{
 
     const startIndex =  users.length;
@@ -81,7 +86,43 @@ const DashUsers = () => {
 
 
 
+const handleDeleteUser = async ()=>{
 
+  setShowModal(false);
+
+  try{
+
+    const res = await fetch(`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/user/delete/${userIdToDelete}` ,{
+   
+      method:'DELETE',
+      credentials: 'include'
+});
+
+
+const data = await res.json();
+
+
+if(data.success === false){
+
+  console.log(data.message);
+
+  return;
+}
+
+
+
+if(data.success === true){
+
+   setUsers((prev) => prev.filter(user =>user._id !==userIdToDelete));
+}
+
+    
+  }catch(err){
+
+    console.log(err.message)
+  }
+    
+}
 
 
   
@@ -144,7 +185,7 @@ const DashUsers = () => {
 
      <h3 className='mb-4 text-gray-500 dark:text-gray-400'>Are you sure you want to delete this user?</h3>
      <div className='flex gap-3 justify-center flex-wrap'>
-      <Button color='failure' >Yes , I'm sure</Button>
+      <Button color='failure' onClick={handleDeleteUser} >Yes , I'm sure</Button>
       <Button onClick={()=>setShowModal(false)} color='gray'>No , Cansel</Button>
      </div>
 

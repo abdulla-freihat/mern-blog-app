@@ -154,9 +154,9 @@ const DashPosts = () => {
       )}
 
 
-      {showMore && (
+      {userPosts.length > 0 && showMore && (
 
-         <button  onClick={handleShowMore } className='self-center w-full text-teal-500 py-7'>Show More</button>     
+     <button  onClick={handleShowMore } className='self-center w-full text-teal-500 py-7'>Show More</button>      
       )}
 
 
