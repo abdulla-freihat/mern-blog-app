@@ -1,6 +1,8 @@
 
 import { Sidebar } from 'flowbite-react';
 import { HiUser, HiArrowSmRight, HiDocumentText } from 'react-icons/hi';
+import { MdDashboard } from "react-icons/md";
+
 import { FaUsers } from "react-icons/fa";
 
 
@@ -70,12 +72,32 @@ const DashSidebar = () => {
     <Sidebar className='w-full md:w-56'>
     <Sidebar.Items>
       <Sidebar.ItemGroup className='flex flex-col gap-1'>
+
+
+
+      {currentUser.isAdmin && 
+
+<Link to='/dashboard?tab=dash'>
+      <Sidebar.Item active={tab=== 'dash'} icon={MdDashboard}  labelColor='dark' as={'div'}>
+      Dashborad
+      </Sidebar.Item>
+      </Link>
+
+
+}
+
+
+
       <Link to='/dashboard?tab=profile'>
         <Sidebar.Item active={tab=== 'profile'} icon={HiUser} label={currentUser.isAdmin ? 'Admin' :'User'} labelColor='dark' as={'div'}>
           Profile
         </Sidebar.Item>
         </Link>
 
+
+    
+
+     
 
 {currentUser.isAdmin && 
 

@@ -96,12 +96,34 @@ const Navbar = () => {
      <span className=' my-1 block text-sm truncate font-medium'>{currentUser.email}</span>
       
    </Dropdown.Header>
+
    <Link to='/dashboard?tab=profile'>
     <Dropdown.Item>
         Profile
     </Dropdown.Item>
    </Link>
+
+
  <Dropdown.Divider />
+
+{currentUser.isAdmin && 
+<>
+  <Link to='/dashboard?tab=dash'>
+    <Dropdown.Item>
+        Dashboard
+    </Dropdown.Item>
+   </Link>
+
+   <Dropdown.Divider />
+
+   </>
+
+}
+
+ 
+
+
+  
    
     <Dropdown.Item onClick={signoutHandler}>
         Sign Out
