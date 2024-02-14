@@ -131,7 +131,7 @@ const DashboardComp = () => {
 
                  <div className='mt-2 flex gap-2'>
                  <div className='flex items-center text-teal-500'>
-                 <FaLongArrowAltUp/> 
+                {lastMonthUsers  === 0 ?   ''  : <FaLongArrowAltUp/>   } 
                     <span >{lastMonthUsers}</span> 
                     </div>
                     <span className='text-gray-500'>Last Month</span>
@@ -153,7 +153,7 @@ const DashboardComp = () => {
 
                  <div className='mt-2 flex gap-2'>
                  <div className='flex items-center text-teal-500'>
-                 <FaLongArrowAltUp/> 
+                  {lastMonthPosts === 0 ? '' : <FaLongArrowAltUp />} 
                     <span >{lastMonthPosts}</span> 
                     </div>
                     <span className='text-gray-500'>Last Month</span>
