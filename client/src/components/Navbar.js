@@ -52,7 +52,7 @@ const Navbar = () => {
   }
   return (
 
-    <FlowbiteNavbar className='border-b-2 w-full'>
+    <FlowbiteNavbar className='border-b-2 w-full '>
     <Link to='/' className='font-bold text-lg  md:text-xl  text-transparent bg-clip-text  bg-gradient-to-r to-emerald-600 from-sky-400'>Abdulla Blog</Link> 
 
     <form>
