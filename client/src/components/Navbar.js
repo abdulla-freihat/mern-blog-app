@@ -160,9 +160,7 @@ const Navbar = () => {
             <Link to='/about'>About</Link>
             </FlowbiteNavbar.Link>
             
-            <FlowbiteNavbar.Link active={path === '/projects'} as={'div'}>
-            <Link to='/projects'>Projects</Link>
-            </FlowbiteNavbar.Link>
+           
            
       </FlowbiteNavbar.Collapse>
 
