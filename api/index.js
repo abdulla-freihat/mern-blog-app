@@ -7,7 +7,8 @@ dotenv.config({path:__dirname+'/.env'});
 
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
-const postRoutes = require('./routes/postRoutes')
+const postRoutes = require('./routes/postRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 
@@ -53,3 +54,4 @@ app.listen(process.env.PORT, ()=>{
 app.use('/api/user' , userRoutes);
 app.use('/api/auth' , authRoutes);
 app.use('/api/post' , postRoutes);
+app.use('/api/comment' , commentRoutes);

@@ -115,7 +115,7 @@ const SinglePost = () => {
           </div>
 
 
-       <Comments />
+       <Comments postId={singlePost && singlePost._id}  />
 
 
 
