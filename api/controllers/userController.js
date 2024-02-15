@@ -144,9 +144,34 @@ const getUsers = async (req ,  res)=>{
         
 }
 
+
+const getUser = async(req ,res)=>{
+
+     try{
+
+         const user = await userSchema.findById(req.params.userId);
+
+         if(!user){
+
+            return res.status(403).json({success:false , message:'User not found.'})
+
+         }
+
+
+         const{password , ...rest} = user._doc;
+         res.status(200).json({success:true ,rest});
+
+     }catch(err){
+
+        res.status(400).json({success : false , message: err.message})  
+
+     }
+}
+
 module.exports={
      test,
       updateUser,
       deleteUser,
-      getUsers
+      getUsers,
+      getUser
 }

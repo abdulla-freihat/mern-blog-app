@@ -1,13 +1,54 @@
-import Reac , {useState} from 'react'
+import Reac , {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import { Link } from 'react-router-dom';
 import { Alert, Button,Textarea } from 'flowbite-react';
+import CommentSection from './CommentSection';
 const Comments = ({postId}) => {
 
     const {currentUser} = useSelector(state=>state.user);
     const[comment , setComment] = useState('');
     const [commentError , setCommentError] = useState(null)
+    const [commentsData , setCommentsData] = useState([]);
 
+
+
+
+       useEffect(()=>{
+     
+
+
+        const fetchData =async()=>{
+            try{
+
+          
+
+                const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/comment/getPostComments/${postId}` )
+
+                
+                const data = await res.json()
+
+
+                 if(data.success===false){
+                   return ;
+                 }
+
+
+                 if(data.success===true){
+                   setCommentsData(data.comments);
+                 }
+                 
+
+
+            }catch(err){
+
+               console.log(err.message)
+            }
+
+          }
+
+            fetchData()
+
+       },[postId])
 
 
     const handleSubmit=async(e)=>{
@@ -35,6 +76,7 @@ const Comments = ({postId}) => {
             
           setComment('');
           setCommentError(null);
+         
   
           }
 
@@ -104,6 +146,25 @@ const Comments = ({postId}) => {
        )}
 
 
+            <div className='my-5 flex gap-2 font-semibold'>
+              <span className=''>Comments</span>
+              <span className='border px-2 rounded '>{commentsData.length}</span>
+            </div>
+
+
+            <div className='flex flex-col gap-3'>
+
+
+           
+              {commentsData&& commentsData.map((comment)=>(
+
+                <CommentSection key={comment._id} comment={comment}  />
+                
+
+              ))}
+            </div>
+
+         
     </div>
   )
 }

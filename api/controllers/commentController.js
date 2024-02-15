@@ -9,7 +9,7 @@ const createComment = async(req ,res)=>{
         const {content, postId , userId} = req.body;
 
         if(!userId === req.user.id){
-            return res.status(400).json({success:false ,message: 'You are not allowed to create this comment.'})
+            return res.status(403).json({success:false ,message: 'You are not allowed to create this comment.'})
 
         }
 
@@ -31,7 +31,21 @@ const createComment = async(req ,res)=>{
 }
 
 
+const getPostComments = async (req, res) => {
+    try {
+        const comments = await commentSchema
+            .find({ postId: req.params.postId })
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({ success: true, comments });
+    } catch (err) {
+        return res.status(400).json({ success: false, message: err.message });
+    }
+}
+
+
 module.exports={
 
-     createComment
+     createComment,
+     getPostComments
 }
