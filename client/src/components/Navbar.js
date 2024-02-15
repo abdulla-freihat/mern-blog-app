@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState , useEffect} from 'react'
 import { Link  , useLocation} from 'react-router-dom';
 import { Button, Navbar as FlowbiteNavbar, TextInput , Dropdown , Avatar } from "flowbite-react";   //FlowbiteNavbar is an alias name  it should be Navbar 
 import { AiOutlineSearch } from "react-icons/ai";
@@ -15,10 +15,24 @@ const Navbar = () => {
       const {theme} = useSelector(state=>state.theme)
       const dispatch = useDispatch();
       const navigate = useNavigate();
+     const path = useLocation().pathname;
+     const location = useLocation();
+      const [searchTerm , setSearchTerm] = useState('');
 
-    const path = useLocation().pathname;
+    
 
 
+useEffect(()=>{
+
+      const urlParams = new URLSearchParams(location.search);
+
+       const searchTermFromUrl = urlParams.get('searchTerm');
+
+       setSearchTerm(searchTermFromUrl)
+
+       
+
+} , [location.search])
 
 
     const signoutHandler = async()=>{
@@ -50,14 +64,29 @@ const Navbar = () => {
    }
   
   }
+
+
+
+  const handleSubmit =  (e)=>{
+
+           e.preventDefault();
+           
+           const urlParams = new URLSearchParams(location.search);
+            
+           urlParams.set('searchTerm',searchTerm );
+
+            const searchQuery = urlParams.toString();
+
+            navigate(`/search?${searchQuery}`)
+  }
   return (
 
     <FlowbiteNavbar className='border-b-2 w-full '>
     <Link to='/' className='font-bold text-lg  md:text-xl  text-transparent bg-clip-text  bg-gradient-to-r to-emerald-600 from-sky-400'>Abdulla Blog</Link> 
 
-    <form>
+    <form onSubmit={handleSubmit}>
 
-          <TextInput  type='text' placeholder='Search...'  rightIcon={AiOutlineSearch} className='hidden lg:inline '/>
+          <TextInput  type='text' placeholder='Search...'  rightIcon={AiOutlineSearch} value={searchTerm} className='hidden lg:inline '   onChange={(e)=>setSearchTerm(e.target.value)}/>
         
 
     </form>
@@ -160,7 +189,9 @@ const Navbar = () => {
             <Link to='/about'>About</Link>
             </FlowbiteNavbar.Link>
             
-           
+            <FlowbiteNavbar.Link active={path === '/projects'} as={'div'}>
+            <Link to='/search'>Posts</Link>
+            </FlowbiteNavbar.Link>
            
       </FlowbiteNavbar.Collapse>
 

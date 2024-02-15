@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom"
 
 import CallToAction from '../components/CallToAction';
 import PostCard from '../components/PostCard';
+import Comments from '../components/Comments';
 
 const SinglePost = () => {
 
@@ -112,6 +113,9 @@ const SinglePost = () => {
            <CallToAction />
 
           </div>
+
+
+       <Comments />
 
 
 

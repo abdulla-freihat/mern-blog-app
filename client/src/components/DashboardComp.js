@@ -102,12 +102,7 @@ const DashboardComp = () => {
 
 
 
-   const scrollToTop =()=> {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth" 
-        });
-      }
+  
   return (
     <div className=' w-full p-2'>
 
@@ -241,8 +236,8 @@ const DashboardComp = () => {
         {posts && posts.map((post , index)=>(
 
             <Table.Row  key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell><Link onClick={scrollToTop} to={`/post/${post.slug}`}><img className=" h-10 object-cover" src={post.image} alt={post.title} /></Link></Table.Cell>
-                <Table.Cell><Link onClick={scrollToTop} className='hover:underline text-gray-500 font-md dark:text-white' to={`/post/${post.slug}`}>{post.title}</Link></Table.Cell>
+            <Table.Cell><Link  to={`/post/${post.slug}`}><img className=" h-10 object-cover" src={post.image} alt={post.title} /></Link></Table.Cell>
+                <Table.Cell><Link  className='hover:underline text-gray-500 font-md dark:text-white' to={`/post/${post.slug}`}>{post.title}</Link></Table.Cell>
             <Table.Cell>{post.category}</Table.Cell>
             
             

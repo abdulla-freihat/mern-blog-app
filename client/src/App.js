@@ -13,6 +13,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import SinglePost from "./Pages/SinglePost";
 import UpdatePost from "./Pages/UpdatePost";
+import Search from "./Pages/Search";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 
@@ -24,14 +26,16 @@ function App() {
 
   return (
     <BrowserRouter>
+    <ScrollToTop />
            <Navbar />
        <Routes>
          <Route    path='/'   element={<Home />} />
          <Route    path='/about'   element={<About />} />
          <Route    path='/sign-in'   element={<Signin />} />
          <Route    path='/sign-up'   element={<Signup />} />
-         <Route    path='/projects'   element={<Projects />} />
+         <Route    path='/search'   element={<Search />} />
          <Route    path='/post/:slug'   element={<SinglePost />} />
+         
          
 
          
