@@ -1,14 +1,17 @@
 import Reac , {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import { Alert, Button,Textarea } from 'flowbite-react';
 import CommentSection from './CommentSection';
+
 const Comments = ({postId}) => {
 
     const {currentUser} = useSelector(state=>state.user);
     const[comment , setComment] = useState('');
     const [commentError , setCommentError] = useState(null)
     const [commentsData , setCommentsData] = useState([]);
+
+    const navigate = useNavigate();
 
 
 
@@ -20,7 +23,7 @@ const Comments = ({postId}) => {
         const fetchData =async()=>{
             try{
 
-          
+            
 
                 const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/comment/getPostComments/${postId}` )
 
@@ -57,6 +60,8 @@ const Comments = ({postId}) => {
 
          try{
 
+         
+
           const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/comment/create` , {
 
             credentials : 'include' , 
@@ -85,6 +90,47 @@ const Comments = ({postId}) => {
            setCommentError(err.message);
          }
        
+         
+    }
+
+
+    const handleLike = async(commentId)=>{
+
+         try{
+
+          if(!currentUser){
+            navigate('/sign-in')
+          return;
+       }
+
+          const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/comment/likeComment/${commentId}` , {
+
+            credentials : 'include' , 
+            method:'PUT',
+       
+           })
+       
+       
+             const data = await res.json();
+
+             if(res.ok){
+
+                  setCommentsData(commentsData.map((comment)=>
+                       comment._id === commentId ? {
+                         ...comment,
+                         likes:data.likes,
+                         numberOfLikes : data.likes.length,
+                       } : comment
+                     
+                  ))
+             }
+
+         }catch(err){
+
+            console.log(err.message);
+         }
+
+
          
     }
 
@@ -158,7 +204,7 @@ const Comments = ({postId}) => {
            
               {commentsData&& commentsData.map((comment)=>(
 
-                <CommentSection key={comment._id} comment={comment}  />
+                <CommentSection key={comment._id} comment={comment} onLike={handleLike}  />
                 
 
               ))}

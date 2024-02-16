@@ -44,8 +44,48 @@ const getPostComments = async (req, res) => {
 }
 
 
+const likeComment = async(req,res)=>{
+
+        try{
+
+             const comment = await commentSchema.findById(req.params.commentId);
+
+             if(!comment){
+
+                return res.status(403).json({success:false ,message: 'No comment found.'})
+
+             }
+
+             const userIndex = comment.likes.indexOf(req.user.id);
+             
+             if(userIndex === -1){
+
+                    comment.numberOfLikes +=1;
+                  comment.likes.push(req.user.id);
+                    
+             }else{
+                comment.numberOfLikes -=1;
+                comment.likes.splice(userIndex , 1);
+
+                 
+             }
+
+             await comment.save();
+             return res.status(200).json(comment);
+
+
+
+        }catch(err){
+
+            return res.status(400).json({ success: false, message: err.message });
+
+        }
+}
+
+
 module.exports={
 
      createComment,
-     getPostComments
+     getPostComments,
+     likeComment
 }
