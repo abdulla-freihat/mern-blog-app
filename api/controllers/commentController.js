@@ -126,10 +126,43 @@ const editComment = async(req ,res)=>{
 }
 
 
+const deleteComment = async(req ,res)=>{
+
+     try{
+
+        const comment = await commentSchema.findById(req.params.commentId);
+
+          if(!comment){
+
+            return res.status(403).json({success:false ,message: 'No comment found.'})
+
+          }
+
+           if(comment.userId !== req.user.id && !req.user.isAdmin){
+
+            return res.status(403).json({success:false ,message: 'You are not allowed delete this comment.'})
+
+           }
+            
+
+           await commentSchema.findByIdAndDelete(req.params.commentId)
+
+              
+        return res.status(200).json('comment has been deleted');
+
+     }catch(err){
+
+        return res.status(400).json({ success: false, message: err.message });
+
+     }
+     
+}
+
 module.exports={
 
      createComment,
      getPostComments,
      likeComment,
-     editComment
+     editComment,
+     deleteComment 
 }

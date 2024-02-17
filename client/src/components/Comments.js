@@ -1,4 +1,4 @@
-import Reac , {useEffect, useState} from 'react'
+import React , {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import { Link , useNavigate } from 'react-router-dom';
 import { Alert, Button,Textarea } from 'flowbite-react';
@@ -136,7 +136,7 @@ const Comments = ({postId}) => {
     }
 
 
-     const handleEdit =async (comment , editedContent)=>{
+     const handleEdit = (comment , editedContent)=>{
 
           setCommentsData(
            commentsData.map((c=>
@@ -145,6 +145,21 @@ const Comments = ({postId}) => {
            ))
           )
      }
+
+
+     const handleDelete =  (commentId)=>{
+
+
+ 
+      setCommentsData(
+        commentsData.filter((comment=>
+
+          comment._id  !==   commentId
+        ))
+       )
+
+          
+        }
   
 
 
@@ -210,17 +225,32 @@ const Comments = ({postId}) => {
             </div>
 
 
-            <div className='flex flex-col gap-3'>
+                {commentsData&& commentsData.length === 0 ?
+                
+                 (
+
+                  <h5 className='text-center text-md my-5'>No comments yet.</h5>
+                 ) :
+
+                 (
+
+                  <div className='flex flex-col gap-3'>
 
 
            
-              {commentsData&& commentsData.map((comment)=>(
+                   {commentsData&& commentsData.map((comment)=>(
 
-                <CommentSection key={comment._id} comment={comment} onLike={handleLike} onEdit ={handleEdit} />
+                   <CommentSection key={comment._id} comment={comment} onLike={handleLike} onEdit ={handleEdit} onDelete ={handleDelete} />
+  
+
+                       ))}
+                       </div>
+
+                   
+                 )
                 
-
-              ))}
-            </div>
+                }
+         
 
          
     </div>

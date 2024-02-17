@@ -2,11 +2,13 @@ import React , {useEffect , useState} from 'react'
 import moment from 'moment'
 import { FaThumbsUp } from "react-icons/fa";
 import {useSelector} from 'react-redux'
-import { Button, Textarea } from 'flowbite-react';
+import { Button, Textarea ,Modal  } from 'flowbite-react';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 
 
-const CommentSection = ({comment , onLike , onEdit}) => {
+
+const CommentSection = ({comment , onLike , onEdit , onDelete}) => {
 
     const [user , setUser] = useState({});
  
@@ -15,6 +17,9 @@ const CommentSection = ({comment , onLike , onEdit}) => {
     const [isEditing , setIsEditing] = useState(false);
 
     const [editedContent , setEditedContent] = useState(comment.content)
+
+    const [showModal , setShowModal] = useState(false);
+
 
 
     useEffect(()=>{
@@ -89,7 +94,39 @@ const CommentSection = ({comment , onLike , onEdit}) => {
    }
 
 
+   const handleDelete =async ()=>{
+
+      setShowModal(false)
+
+           try{
+
+
+            const res = await fetch (`${process.env.REACT_APP_DOMAIN_SERVER_URL}/api/comment/deleteComment/${comment._id}` , {
+    
+               credentials : 'include' , 
+               method:'DELETE',
+               
+              })
+
+
+
+               if(res.ok){
+
+                     onDelete(comment._id)
+               }
+
+           }catch(err){
+
+             console.log(err.message)
+           }
+
+         
+   }
+
+
   return (
+
+   
     <div className='flex  gap-2 border-b p-2'>
     <img src={user.avatar} className='w-10 h-10 object-cover rounded-full'  />
     
@@ -116,7 +153,7 @@ const CommentSection = ({comment , onLike , onEdit}) => {
           <p className='text-sm text-gray-500'>{comment.numberOfLikes > 0 && comment.numberOfLikes + " " + (comment.numberOfLikes ===1 ? "like" : "likes")}</p>
 
            {currentUser && (currentUser._id === comment.userId || currentUser.isAdmin) && <button onClick={handleEdit} className='text-gray-500 hover:underline text-sm cursor-pointer'>Edit</button>}   
-           {currentUser && (currentUser._id === comment.userId || currentUser.isAdmin) && <button className='text-red-500 hover:underline text-sm cursor-pointer'>Delete</button> }    
+           {currentUser && (currentUser._id === comment.userId || currentUser.isAdmin) && <button onClick={() => setShowModal(true)} className='text-red-500 hover:underline text-sm cursor-pointer'>Delete</button> }    
         </div>
 
        </>
@@ -127,7 +164,30 @@ const CommentSection = ({comment , onLike , onEdit}) => {
     </div>
 
 
+
+
+    <Modal onClick={()=>setShowModal(false)}  show={showModal} onClose={()=>setShowModal(false)} popup size='md'>
+  
+  <Modal.Header />
+  <Modal.Body>
+    <div className='text-center'>
+
+    <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
+
+     <h3 className='mb-4 text-gray-500 dark:text-gray-400'>Are you sure you want to delete this post?</h3>
+     <div className='flex gap-3 justify-center flex-wrap'>
+      <Button color='failure' onClick={handleDelete}>Yes , I'm sure</Button>
+      <Button onClick={()=>setShowModal(false)} color='gray'>No , Cansel</Button>
+     </div>
+
     </div>
+  </Modal.Body>
+
+</Modal>
+
+
+    </div>
+   
   )
 }
 
