@@ -16,6 +16,7 @@ const Comments = ({postId}) => {
 
 
 
+
        useEffect(()=>{
      
 
@@ -135,6 +136,17 @@ const Comments = ({postId}) => {
     }
 
 
+     const handleEdit =async (comment , editedContent)=>{
+
+          setCommentsData(
+           commentsData.map((c=>
+
+               c._id === comment._id  ? {...c , content:editedContent} : c
+           ))
+          )
+     }
+  
+
 
   return (
     <div className='max-w-2xl mx-auto w-full p-3'>
@@ -204,7 +216,7 @@ const Comments = ({postId}) => {
            
               {commentsData&& commentsData.map((comment)=>(
 
-                <CommentSection key={comment._id} comment={comment} onLike={handleLike}  />
+                <CommentSection key={comment._id} comment={comment} onLike={handleLike} onEdit ={handleEdit} />
                 
 
               ))}
