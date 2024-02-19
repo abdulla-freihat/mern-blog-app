@@ -15,6 +15,7 @@ import SinglePost from "./Pages/SinglePost";
 import UpdatePost from "./Pages/UpdatePost";
 import Search from "./Pages/Search";
 import ScrollToTop from "./components/ScrollToTop";
+import Page404 from "./Pages/Page404";
 
 
 
@@ -34,6 +35,7 @@ function App() {
          <Route    path='/sign-in'   element={<Signin />} />
          <Route    path='/sign-up'   element={<Signup />} />
          <Route    path='/search'   element={<Search />} />
+         <Route    path='*'   element={<Page404/>} />
          <Route    path='/post/:slug'   element={<SinglePost />} />
          
          
